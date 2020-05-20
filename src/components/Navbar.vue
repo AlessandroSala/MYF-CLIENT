@@ -1,0 +1,43 @@
+<template>
+<v-toolbar>
+<v-toolbar-title class="pr-4"><v-icon class="center">account_balance_wallet</v-icon></v-toolbar-title>
+<v-toolbar-items >
+   <v-btn text to="/home" >
+      <span>Home</span>
+   </v-btn>
+   <v-btn text to="/operations">
+      <span>Operations</span>
+   </v-btn>
+   <v-btn text to="/investments">
+      <span>Investments</span>
+   </v-btn>
+   <v-btn text to="/Statistics">
+      <span>statistics</span>
+   </v-btn>
+      
+</v-toolbar-items>
+<v-spacer></v-spacer>
+<v-toolbar-items>
+   <v-btn text to="/about">
+      <span>About</span>
+   </v-btn>
+</v-toolbar-items>
+<v-btn icon class="ml-2" to="/user">
+   <v-icon >
+      account_circle
+   </v-icon>
+</v-btn>
+</v-toolbar>
+</template>
+
+<script>
+
+export default {
+
+}
+</script>
+
+
+<style scoped>
+
+</style>
