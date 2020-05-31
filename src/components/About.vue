@@ -1,6 +1,6 @@
 <template>
 <p>
-    PAGINA 2
+    About page
 </p>
 </template>
 

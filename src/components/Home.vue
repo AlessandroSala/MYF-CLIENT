@@ -1,4 +1,5 @@
 <template>
+<v-container>
     <div>
         <v-card class="px-4">
         <v-row>
@@ -25,15 +26,18 @@
             <v-card-title>
                 Your last 15 operations:
             </v-card-title>
+            <custom-table :data="tempData" :headers="headers">
+            </custom-table>
             
-            <v-data-table :items="tempData" :headers="headers">
-            </v-data-table>
         </v-card>
     </div>
+</v-container>
 </template>
 
 <script>
 //import ElementRow from './ElementRow'
+import OperationsService from '@/services/OperationsService' 
+import CustomTable from './CustomTable'
 
 export default {
     data() {
@@ -82,24 +86,28 @@ export default {
                         value: 'name',
                     },*/
                     { text: 'Title', value: 'title' },
-                    { text: 'Category', value: 'category' },
+                    { text: 'Description', value: 'description' },
                     { text: 'Type', value: 'type' },
                     { text: 'Amount €', value: 'amount' },
+                    { text: 'Actions', value: 'actions', sortable: false }
             ],
-            tempData: [
-                {title: "prova", category: "category", type: "type", amount: "500.0€"},
-                {title: "prova", category: "category", type: "type", amount: "500.0€"},
-                {title: "prova", category: "category", type: "type", amount: "500.0€"},
-                {title: "prova", category: "category", type: "type", amount: "500.0€"},
-                {title: "prova", category: "category", type: "type", amount: "500.0€"},
-                {title: "prova", category: "category", type: "type", amount: "500.0€"},
-                {title: "prova", category: "category", type: "type", amount: "500.0€"}
-            ],
+            tempData: [],
             balance: 400.0
         }
     },
     components: {
+        CustomTable
         //ElementRow
+    },
+    mounted: async function() {
+        await OperationsService.getOperations({
+            id: 1,
+            limit: 10
+        })
+        .then((response) => {
+            this.tempData=response.data.operations
+        })
+        console.log(this.tempData)
     }
 }
 </script>
