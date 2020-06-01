@@ -25,19 +25,45 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field label="Title" v-model="newOperation.title" required :rules="requiredRule"></v-text-field>
+                <v-text-field label="Category" v-model="newOperation.title" required :rules="requiredRule"></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field label="Category" v-model="newOperation.category" required :rules="requiredRule"></v-text-field>
               </v-col>
               <v-col cols="12">
+                <v-dialog
+                  ref="dialog"
+                  v-model="modal"
+                  :return-value.sync="newOperation.date"
+                  persistent
+                  width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="newOperation.date"
+                      label="Date"
+                      prepend-icon="event"
+                      readonly
+                      :rules="requiredRule"
+
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="newOperation.date" scrollable required :rules="requiredRule">
+                    <v-spacer></v-spacer>
+                    <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
+                    <v-btn text color="primary" @click="$refs.dialog.save(newOperation.date)">OK</v-btn>
+                  </v-date-picker>
+                </v-dialog>
+              </v-col>
+              <v-col cols="12">
                 <v-text-field label="Description" v-model="newOperation.description" required :rules="requiredRule"></v-text-field>
               </v-col>
               <v-col cols="6">
-                <v-text-field label="Amount" v-model="newOperation.amount" required :rules="requiredRule"></v-text-field>
+                <v-text-field label="Amount" v-model="newOperation.amount" required :rules="requiredRule" type="number"></v-text-field>
               </v-col>
               <v-col cols="6">
-                <v-select :items="['1', '0']" label="Type" v-model="newOperation.type" required :rules="requiredRule"></v-select>
+                <v-select :items="types" item-text="name" item-value="value" label="Type" v-model="newOperation.type" required :rules="requiredRule"></v-select>
               </v-col>
             </v-row>
           </v-container>
@@ -54,7 +80,7 @@
       </v-card>
         </v-dialog>
     </v-card-title>
-    <v-data-table :items="data" :headers="headers">
+    <v-data-table :items="data" :headers="headers" :options.sync="options">
         <template v-slot:item.actions="{ item }">
       <v-btn icon
         @click="remove(item)">
@@ -74,26 +100,35 @@ import OperationsService from '@/services/OperationsService'
 export default {
     data: function(){
         return {
+          options: {sortBy: ['date'], sortDesc: [true], /*'rowsPerPage': -1*/},
             headers: [
-                    { text: 'Title', value: 'title' },
+                    { text: 'Category', value: 'title' },
                     { text: 'Description', value: 'description' },
+                    { text: 'Date', value: 'date'},
                     { text: 'Type', value: 'type' },
                     { text: 'Amount €', value: 'amount' },
                     { text: 'Actions', value: 'actions', sortable: false }
             ],
+            types: [
+              { name: "Expense", value: 1},
+              { name: "Earning", value: 0}
+
+            ],
             data: [],
             dialog: false,
+            modal: false,
             newOperation: {
                 title: null,
                 description: null,
                 userId: 1,
                 type: null,
-                amount: null
+                amount: null,
+                date: null
             },
             valid: false,
             name: '',
             requiredRule: [
-                v => !!v || 'Title is required',
+                v => !!v || 'Field is required',
             ]
         }
     },
@@ -118,6 +153,10 @@ export default {
                 limit: 10
             })
             .then((response) => {
+                console.log(response)
+                response.data.operations.forEach(element => {
+                  element.type = element.type == 1 ? "Expense" : "Earning";
+                });
                 this.data=response.data.operations
             })
         },

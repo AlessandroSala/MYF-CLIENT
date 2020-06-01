@@ -30,10 +30,10 @@ export default {
             requiredRule: [
                 v => !!v || 'Field required',
             ],
-                fixedCosts: 0,
-                revenuesPerItem: 0,
-                costsPerItem: 0,
-                maximumQuantity: 1,
+            fixedCosts: 0,
+            revenuesPerItem: 0,
+            costsPerItem: 0,
+            maximumQuantity: 1,
             steps: 15,
             data: [
                 {name: "Fixed Costs", data: {}},

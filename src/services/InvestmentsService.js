@@ -10,5 +10,8 @@ export default {
     },
     removeInvestment(params) {
         return Api().delete('investments', {data : {investmentId: params.id}})
+    },
+    sellInvestment(params) {
+        return Api().delete('investments/sell', {data : {investmentId: params.id, sellPrice: params.price}})
     }
 }

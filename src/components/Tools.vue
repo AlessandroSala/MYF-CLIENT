@@ -17,14 +17,25 @@
         </v-expansion-panel>
     </v-expansion-panels>
     </v-tab-item>
-    <v-tab-item>
+    <v-tab-item value="user"> 
+        <v-expansion-panels>
+        <v-expansion-panel>
+            <v-expansion-panel-header> Track Stock Price </v-expansion-panel-header>
+            <v-expansion-panel-content>
+                <tracker/>
+            </v-expansion-panel-content>
+        </v-expansion-panel>
+    </v-expansion-panels>
     </v-tab-item>
       </v-tabs-items>
   </v-container>
 </template>
 
 <script>
-import BEP from "./BEP";
+import BEP from "./BEP"
+import Tracker from "./Tracker"
+
+
 export default {
     data: function() {
         return {
@@ -32,7 +43,8 @@ export default {
         }
     },
   components: {
-    BEP
+    BEP,
+    Tracker
   }
 };
 </script>
