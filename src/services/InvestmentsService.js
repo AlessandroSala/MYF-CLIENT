@@ -9,6 +9,6 @@ export default {
         return Api().get('investments')
     },
     removeInvestment(params) {
-        return Api().delete('investments', {data : {userId: 1, investmentId: params.id}})
+        return Api().delete('investments', {data : {investmentId: params.id}})
     }
 }

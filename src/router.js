@@ -4,9 +4,10 @@ import Vue from 'vue'
 import Home from './components/Home.vue'
 import Operations from './components/Operations.vue'
 import Investments from './components/Investments.vue'
-import Statistics from './components/Statistics.vue'
 import User from './components/User.vue'
 import About from './components/About.vue'
+import Tools from './components/Tools.vue'
+import Statistics from './components/Statistics.vue'
 
 Vue.use(Router)
 
@@ -31,6 +32,11 @@ export default new Router({
       path: '/statistics',
       name: 'statistics',
       component: Statistics
+    },
+    {
+      path: '/tools',
+      name: 'tools',
+      component: Tools
     },
     {
       path: '/user',

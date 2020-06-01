@@ -11,10 +11,12 @@
    <v-btn text to="/investments">
       <span>Investments</span>
    </v-btn>
-   <v-btn text to="/Statistics">
-      <span>statistics</span>
+   <v-btn text to="/statistics">
+      <span>Statistics</span>
    </v-btn>
-      
+     <v-btn text to="/tools">
+      <span>Tools</span>
+   </v-btn> 
 </v-toolbar-items>
 <v-spacer></v-spacer>
 <v-toolbar-items>

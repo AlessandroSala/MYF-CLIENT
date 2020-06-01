@@ -26,8 +26,6 @@
             <v-card-title>
                 Your last 15 operations:
             </v-card-title>
-            <custom-table :data="tempData" :headers="headers">
-            </custom-table>
             
         </v-card>
     </div>
@@ -37,7 +35,6 @@
 <script>
 //import ElementRow from './ElementRow'
 import OperationsService from '@/services/OperationsService' 
-import CustomTable from './CustomTable'
 
 export default {
     data() {
@@ -96,7 +93,6 @@ export default {
         }
     },
     components: {
-        CustomTable
         //ElementRow
     },
     mounted: async function() {
