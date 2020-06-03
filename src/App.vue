@@ -3,9 +3,17 @@
   <div id="app">
     <v-container  v-if="!$store.state.userLogged">
       <v-row>
-        <v-col cols="3"/>
-        <v-col cols="6">
-      <v-card>
+        <v-col cols="1"/>
+        <v-col cols="10">
+          <v-card class="px-4">
+            <v-card-title><p class=" display-1 font-weight-light mx-auto mb-0">Welcome to Manage Your Finance</p> </v-card-title>
+            <!--v-card>
+                <span class="d-inline">Balance: </span> <p class="d-inline">{{balance}}€</p>
+                <span class="">Spent this month: </span> <p class="d-inline">{{balance}}€</p>
+                <span class="d-inline">Earned this month: </span> <p class="d-inline">{{balance}}€</p>
+            </v-card-->
+            <v-divider class="mb-2"></v-divider>
+      <v-card flat>
     <v-tabs v-model="tab"
     centered
     fluid>
@@ -21,6 +29,7 @@
     </v-tab-item>
   </v-tabs-items>
       </v-card>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -51,7 +60,6 @@ export default {
   }),
 
   mounted: function() {
-    console.log(this.$store.state.user)
   }
 };
 </script>

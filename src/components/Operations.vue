@@ -28,9 +28,6 @@
                 <v-text-field label="Category" v-model="newOperation.title" required :rules="requiredRule"></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-text-field label="Category" v-model="newOperation.category" required :rules="requiredRule"></v-text-field>
-              </v-col>
-              <v-col cols="12">
                 <v-dialog
                   ref="dialog"
                   v-model="modal"
@@ -81,6 +78,9 @@
         </v-dialog>
     </v-card-title>
     <v-data-table :items="data" :headers="headers" :options.sync="options">
+      <template v-slot:item.amount="{ item }">
+           <span>{{item.amount}}€ </span>
+         </template>
         <template v-slot:item.actions="{ item }">
       <v-btn icon
         @click="remove(item)">
@@ -110,8 +110,8 @@ export default {
                     { text: 'Actions', value: 'actions', sortable: false }
             ],
             types: [
-              { name: "Expense", value: 1},
-              { name: "Earning", value: 0}
+              { name: "Expense", value: 2},
+              { name: "Earning", value: 1}
 
             ],
             data: [],
@@ -140,7 +140,7 @@ export default {
     },
     methods: {
         submit: async function() {
-            console.log(this.newOperation)
+            this.newOperation.type -= 1
             OperationsService.addOperation(this.newOperation)
             .then(()=>{
                 this.updateTable()
@@ -153,7 +153,6 @@ export default {
                 limit: 10
             })
             .then((response) => {
-                console.log(response)
                 response.data.operations.forEach(element => {
                   element.type = element.type == 1 ? "Expense" : "Earning";
                 });
@@ -162,15 +161,13 @@ export default {
         },
         remove: async function(item) {
             await OperationsService.removeOperation(item)
-            .then((response) => {
-                console.log(response)
+            .then(() => {
                 this.updateTable()
             })
         }
     },
     watch: {
       valid: function () {
-        console.log(this.valid)
       }
     }
 }

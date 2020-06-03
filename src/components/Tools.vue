@@ -28,7 +28,8 @@
     </v-expansion-panels>
     </v-tab-item>
       </v-tabs-items>
-  </v-container>
+<!--       <div class="text-center display-3 font-italic font-weight-thin mt-12"> More Coming Soon </div>
+ -->  </v-container>
 </template>
 
 <script>

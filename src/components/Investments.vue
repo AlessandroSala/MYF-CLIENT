@@ -61,6 +61,9 @@
         </v-dialog>
       </v-card-title>
       <v-data-table :items="data" :headers="headers">
+        <template v-slot:item.purchasePrice="{ item }">
+           <span>{{item.purchasePrice}}€ </span>
+         </template>
         <template v-slot:item.actions="{ item }">
           <v-tooltip bottom small>
             <template v-slot:activator="{ on }">
@@ -136,7 +139,6 @@ export default {
   },
   methods: {
     submit: async function() {
-      console.log(this.newInvestment);
       InvestmentsService.addInvestment(this.newInvestment).then(() => {
         this.updateTable();
       });
@@ -151,21 +153,21 @@ export default {
       });
     },
     remove: async function(item) {
-      await InvestmentsService.removeInvestment(item).then(response => {
-        console.log(response);
+      await InvestmentsService.removeInvestment(item)
+      .then(() => {
         this.updateTable();
       });
     },
     sell: async function(item) {
-      InvestmentsService.sellInvestment({id: item.id, price: this.sellPrice}).then(response => {
-        console.log(response);
+      InvestmentsService.sellInvestment({id: item.id, price: this.sellPrice})
+      .then(() => {
         this.updateTable();
       });
     }
   },
   watch: {
     valid: function() {
-      console.log(this.valid);
+     
     }
   }
 };

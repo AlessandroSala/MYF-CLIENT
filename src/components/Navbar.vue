@@ -24,11 +24,11 @@
       <span>About</span>
    </v-btn>
 </v-toolbar-items>
-<v-btn icon class="ml-2" to="/user">
-   <v-icon >
-      account_circle
-   </v-icon>
+<v-toolbar-items>
+<v-btn text to="/user">
+   <span>Logout</span>
 </v-btn>
+</v-toolbar-items>
 </v-toolbar>
 </template>
 

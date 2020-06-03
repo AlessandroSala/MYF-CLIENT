@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card flat>
         <v-form v-model="valid">
         <v-row class="pa-5">
             <v-col>
@@ -15,7 +15,7 @@
             <v-text-field   type="number"  label="Maximum Quantity" :rules="requiredRule" v-model="maximumQuantity"></v-text-field>
 </v-col>
         </v-row>
-        <line-chart :data="data"/>
+        <line-chart :data="data" :round="2" xtitle="Quantity Produced" ytitle="Cash" suffix="€"/>
         </v-form>
     </v-card>
 </template>
@@ -60,7 +60,6 @@ export default {
                 compData[2].data[str]= this.revenuesPerItem*i
             }
             this.data=compData
-            console.log(this.data)
         },
         revenuesPerItem: function() {
             let compData = [
@@ -79,7 +78,6 @@ export default {
                 compData[2].data[str]= this.revenuesPerItem*i
             }
             this.data=compData
-            console.log(this.data)
         },
         costsPerItem: function() {
             let compData = [
@@ -98,7 +96,6 @@ export default {
                 compData[2].data[str]= this.revenuesPerItem*i
             }
             this.data=compData
-            console.log(this.data)
         },
         maximumQuantity: function() {
             let compData = [
@@ -117,7 +114,6 @@ export default {
                 compData[2].data[str]= this.revenuesPerItem*i
             }
             this.data=compData
-            console.log(this.data)
         },
 
     }

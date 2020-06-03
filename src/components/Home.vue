@@ -2,31 +2,41 @@
 <v-container>
     <div>
         <v-card class="px-4">
+            <v-card-title><p class=" display-2 font-weight-light mx-auto mb-0">Summary of current month - {{currentMonth}} </p> </v-card-title>
+            
+            <v-divider></v-divider>
         <v-row>
             <v-col>
-                Summary of current month
-                <pie-chart :data="categoriesData">
+                <v-card flat>
+                    <v-card-title class="justify-center">Expenses by Category</v-card-title>
+                <pie-chart :data="pieData" suffix="€">
                 </pie-chart>
-                
+                </v-card>
             </v-col>
             
             
             <v-col>
-                <span class="d-inline">Balance: </span> <p class="d-inline">{{balance}}€</p><br>
-                <span class="">Spent this month: </span> <p class="d-inline">{{balance}}€</p><br>
-                <span class="d-inline">Earned this month: </span> <p class="d-inline">{{balance}}€</p><br>
-                <v-row>
-                    <line-chart :data="yearlyDataExpenditures">
+                <v-card flat>
+                    <v-card-title class="justify-center">Expenses and Earnings by Day</v-card-title>
+                    <line-chart :data="totalData" xtitle="Day" ytitle="Amount" suffix="€" >
                     </line-chart>
-                </v-row>
+                </v-card>
             </v-col>
         </v-row>
         </v-card>
+            <v-divider class="my-4"></v-divider>
         <v-card class="ma-4">
             <v-card-title>
-                Your last 15 operations:
+                Recent operations
             </v-card-title>
-            
+            <iterator-operations/>
+        </v-card>
+            <v-divider class="my-4"></v-divider>
+            <v-card class="ma-4">
+                <v-card-title>
+                Recent investments
+            </v-card-title>
+            <iterator-investments/>
         </v-card>
     </div>
 </v-container>
@@ -35,46 +45,19 @@
 <script>
 //import ElementRow from './ElementRow'
 import OperationsService from '@/services/OperationsService' 
+import IteratorOperations from '@/components/IteratorOperations'
+import IteratorInvestments from '@/components/IteratorInvestments'
 
 export default {
     data() {
         return {
-            categoriesData: {
-                'prova': 1,
-                'prova2': 1,
-                'prova3': 1,
-                'prova4': 1,
-                'prova5': 1,
-                'prova6': 1
+            pieData: {
+                vestiti: 1,
+                bar: 1
             },
-            yearlyDataExpenditures: {
-                'January': 100,
-                'February': 200,
-                'March': 500,
-                'April': 560,
-                'May': 520,
-                'June': 200,
-                'July': 300,
-                'August': 50,
-                'September': 500,
-                'October': 300,
-                'November': 800,
-                'December': 1000,
-            },
-            yearlyDataEarnings: {
-                'January': 100,
-                'February': 200,
-                'March': 500,
-                'April': 560,
-                'May': 520,
-                'June': 200,
-                'July': 300,
-                'August': 50,
-                'September': 500,
-                'October': 300,
-                'November': 800,
-                'December': 1000,
-            },
+            monthlyExpenses: {},
+            monthlyEarnings: {},
+            totalData: {},
             headers: [
                     /*{
                         text: 'Operations',
@@ -93,17 +76,70 @@ export default {
         }
     },
     components: {
-        //ElementRow
+        IteratorInvestments,
+        IteratorOperations
+    },
+    computed: {
+        currentMonth: function() {
+            const m = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+            return m[new Date().getMonth()]
+        }
     },
     mounted: async function() {
-        await OperationsService.getOperations({
-            id: 1,
-            limit: 10
+        let tmpData = {}
+        let currMonth = ''+(new Date().getMonth()+1)
+        if(currMonth < 10 ) {
+            currMonth = '0'+currMonth
+        }
+
+        await OperationsService.getCategoriesData({
+            month: currMonth
         })
         .then((response) => {
-            this.tempData=response.data.operations
+            response.data.categoriesData.forEach(element => {
+                tmpData[element.category]=element.amount
+            });
+            this.pieData=tmpData
         })
-        console.log(this.tempData)
+        .catch((err) => console.log(err))
+
+        tmpData = {}
+        await OperationsService.getMonthExpenses({
+            month: currMonth
+        })
+        .then((response) => {
+            response.data.expenses.forEach(element => {
+                
+                tmpData[Number(element.day)]=element.amount
+            });
+            this.monthlyExpenses=tmpData
+        })
+        .catch((err) => console.log(err))
+
+        tmpData = {}
+        await OperationsService.getMonthEarnings({
+            month: currMonth
+        })
+        .then((response) => {
+            response.data.earnings.forEach(element => {
+                
+                tmpData[Number(element.day)]=element.amount
+            });
+            this.monthlyEarnings=tmpData
+        })
+        .catch((err) => console.log(err))
+        this.totalData = [
+            {
+                name: "Expenses",
+                data: this.monthlyExpenses
+            },
+            {
+                name: "Earnings",
+                data: this.monthlyEarnings
+            }
+        ]
+        
+        
     }
 }
 </script>
